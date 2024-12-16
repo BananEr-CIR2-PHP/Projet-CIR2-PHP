@@ -48,7 +48,7 @@ CREATE TABLE etablissement (
 -- Création de la table rdv
 CREATE TABLE rdv (
     id SERIAL PRIMARY KEY,
-    id_patient INT REFERENCES patient(id),
+    id_patient INT REFERENCES patient(id) NULL,
     debut TIMESTAMP NOT NULL,
     fin TIMESTAMP NOT NULL,
     id_etablissement INT REFERENCES etablissement(id) NOT NULL,

@@ -15,7 +15,7 @@ INSERT INTO patient (nom, prenom, tel, email, mdp_hash) VALUES
 ('White', 'Walter', '+1 5055034455', 'walter.white@icloud.com', '$2y$10$asbt1MS9W9quWCJJOFpd1ede4n4I5gpfWXjmjjCTA/2SZXHEH4lnW');
 
 -- Insertion des données dans la table specialite
-INSERT INTO specialite (id, nom) VALUES
+INSERT INTO specialite (id, specialite) VALUES
 (1, 'chirurgie'),
 (2, 'podologue'),
 (3, 'généraliste'),
