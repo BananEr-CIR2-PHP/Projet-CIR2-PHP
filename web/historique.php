@@ -5,6 +5,8 @@ if (! isset($_SESSION["user_id"])) {
     header("location:login.php");
     exit;
 }
+
+$conn=dbConnect();
 ?>
 
 <!DOCTYPE html>
@@ -22,43 +24,57 @@ if (! isset($_SESSION["user_id"])) {
             </form>
         </nav>
 
-        <div>
+        <div class="mx-auto" style="width:98%">
             <div class="d-flex justify-content-between">
                 <h1>Mes rendez-vous</h1>
-                <form action="" method="get">
+                <form action="" method="get" class="align-self-center">
                     <button type="submit" class="btn bg-primary border-light rounded-5 text-light">Prendre rendez-vous</button>
                 </form>
             </div>
 
-            <div class="rounded-2 border border-dark d-grid gap-3">
-                <div class="rounded-2 border border-dark">
-                    <div class="d-flex justify-content-between bg-primary text-light">
-                        <p>RDV du ... à ...</p>
-                        <form action="" method="post">
-                            <button type="submit" class="btn bg-primary border-light rounded-5 text-light" value="">Prendre un autre rendez-vous avec ...</button>
-                        </form>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p>Dr. ...</p>
-                        <p>...</p>
-                        <p>...</p>
-                    </div>
-                </div>
+<?php
+// Show each RDV
+echo "<div class=\"rounded-2 border border-dark d-grid gap-3 p-1\">";
+foreach (dbGetAllRDVIds($conn, $_SESSION['user_id']) as $rdv_id) {
+    $doc_id = dbGetDocId($conn, $rdv_id);
+    $doc_fullname = dbGetDocFullName($conn, $doc_id);
+    $doc_spe = dbGetDocSpe($conn, $doc_id);
+    $doc_place = dbGetRDVPlace($conn, $rdv_id);
 
-                <div class="rounded-2 border border-dark">
+    echo "
+    <div class=\"rounded-2 border border-dark d-flex flex-column\">
+        <div class=\"d-flex justify-content-between bg-primary text-light\">
+            <p class=\"my-auto\">RDV du ... à ...</p>
+            <form action=\"\" method=\"post\">
+                <button type=\"submit\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"\">Prendre un autre rendez-vous avec Dr. $doc_fullname</button>
+            </form>
+        </div>
+        <div class=\"d-flex justify-content-between\">
+            <p class=\"my-auto p-2\">Dr. $doc_fullname</p>
+            <p class=\"my-auto p-2\">$doc_spe</p>
+            <p class=\"my-auto p-2\">$doc_place</p>
+        </div>
+    </div>";
+}
+echo "</div>";
+?>
+            
+            <!-- Example line
+            <div class="rounded-2 border border-dark d-grid gap-3 p-1">
+                <div class="rounded-2 border border-dark d-flex flex-column">
                     <div class="d-flex justify-content-between bg-primary text-light">
-                        <p>RDV du ... à ...</p>
+                        <p class="my-auto">RDV du ... à ...</p>
                         <form action="" method="post">
-                            <button type="submit" class="btn bg-primary border-light rounded-5 text-light" value="">Prendre un autre rendez-vous avec ...</button>
+                            <button type="submit" class="btn bg-primary border-light rounded-5 text-light m-1" value="">Prendre un autre rendez-vous avec ...</button>
                         </form>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <p>Dr. ...</p>
-                        <p>...</p>
-                        <p>...</p>
+                        <p class="my-auto p-2">Dr. Pierre LEMOINE</p>
+                        <p class="my-auto p-2">Neurologie</p>
+                        <p class="my-auto p-2">CHU de Nantes</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </body>
 </html>
