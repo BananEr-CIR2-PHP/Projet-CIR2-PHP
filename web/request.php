@@ -6,6 +6,7 @@ session_start();
 if(isset($_REQUEST["btn"])) {
     if ($_REQUEST["btn"]=="temp_login") {
         $_SESSION["user_id"] = 3;
+        $_SESSION['timezone'] = new DateTimeZone('Europe/Paris');
         header("location:historique.php");
         exit;
     }

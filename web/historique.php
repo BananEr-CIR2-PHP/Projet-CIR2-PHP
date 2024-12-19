@@ -1,11 +1,11 @@
 <?php
 session_start();
-include_once('database.php');
 if (! isset($_SESSION["user_id"])) {
     header("location:login.php");
     exit;
 }
-
+include_once('database.php');
+include_once('time.php');
 $conn=dbConnect();
 ?>
 
@@ -25,7 +25,7 @@ $conn=dbConnect();
         </nav>
 
         <div class="mx-auto" style="width:98%">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between m-3">
                 <h1>Mes rendez-vous</h1>
                 <form action="" method="get" class="align-self-center">
                     <button type="submit" class="btn bg-primary border-light rounded-5 text-light">Prendre rendez-vous</button>
@@ -34,25 +34,29 @@ $conn=dbConnect();
 
 <?php
 // Show each RDV
-echo "<div class=\"rounded-2 border border-dark d-grid gap-3 p-1\">";
+echo "<div class=\"rounded-2 border border-dark d-grid gap-3 p-2\">";
 foreach (dbGetAllRDVIds($conn, $_SESSION['user_id']) as $rdv_id) {
     $doc_id = dbGetDocId($conn, $rdv_id);
     $doc_fullname = dbGetDocFullName($conn, $doc_id);
     $doc_spe = dbGetDocSpe($conn, $doc_id);
-    $doc_place = dbGetRDVPlace($conn, $rdv_id);
+    $rdv_info = dbGetRDVInfo($conn, $rdv_id);
+    $doc_place = $rdv_info['place'];        // TODO : gestion des erreurs
+
+    $rdv_start_date = getLocalDate($rdv_info['start']);
+    $rdv_start_time = getLocalTime($rdv_info['start']);
 
     echo "
     <div class=\"rounded-2 border border-dark d-flex flex-column\">
         <div class=\"d-flex justify-content-between bg-primary text-light\">
-            <p class=\"my-auto\">RDV du ... à ...</p>
+            <p class=\"my-auto\">RDV du $rdv_start_date à $rdv_start_time</p>
             <form action=\"\" method=\"post\">
                 <button type=\"submit\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"\">Prendre un autre rendez-vous avec Dr. $doc_fullname</button>
             </form>
         </div>
         <div class=\"d-flex justify-content-between\">
-            <p class=\"my-auto p-2\">Dr. $doc_fullname</p>
-            <p class=\"my-auto p-2\">$doc_spe</p>
-            <p class=\"my-auto p-2\">$doc_place</p>
+            <p class=\"my-auto p-2 text-start\" style=\"width:33%;\">Dr. $doc_fullname</p>
+            <p class=\"my-auto p-2 text-center\" style=\"width:33%;\">$doc_spe</p>
+            <p class=\"my-auto p-2 text-end\" style=\"width:33%;\">$doc_place</p>
         </div>
     </div>";
 }

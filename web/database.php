@@ -60,14 +60,10 @@ function dbGetDocSpe($conn, $doc_id) {
     return ucfirst($result['specialite']);
 }
 
-function dbGetRDVPlace($conn, $rdv_id) {
-    $stmt = $conn->prepare('SELECT e.nom FROM rdv r JOIN etablissement e ON e.id=r.id_etablissement WHERE r.id=:id;');
+function dbGetRDVInfo($conn, $rdv_id) {
+    $stmt = $conn->prepare('SELECT e.nom AS "place", r.debut AS "start", r.fin AS "end" FROM rdv r JOIN etablissement e ON e.id=r.id_etablissement WHERE r.id=:id;');
     $stmt->bindParam(':id', $rdv_id);
     $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($result === false) {
-        return false;
-    }
-    return ucfirst($result['nom']);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 ?>
