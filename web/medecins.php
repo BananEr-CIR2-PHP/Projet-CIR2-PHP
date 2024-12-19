@@ -23,6 +23,14 @@ $conn=dbConnect();
             </form>
         </nav>
 
+<?php
+// Create datalist for list of specialities
+echo "<datalist id=specialites>";
+foreach (dbGetAllSpe($conn) as $spe) {
+    echo "<option value=\"$spe\">";
+}
+echo "</datalist>";
+?>
         <div class="mx-auto" style="width:98%">
             <form action="" method="post" class="d-flex justify-content-between m-3">
                 <div>
@@ -31,7 +39,7 @@ $conn=dbConnect();
                 </div>
                 <div>
                     <label for="specialite" class="px-3">Spécialité</label>
-                    <input type="text" name="specialite"></input>
+                    <input type="search" name="specialite" list="specialites"></input>
                 </div>
                 <div>
                     <label for="etablissement" class="px-3">Établissement</label>

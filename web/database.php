@@ -117,4 +117,14 @@ function dbGetDocPlaces($conn, $doc_id) {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+
+function dbGetAllSpe($conn) {
+    $stmt = $conn->query('SELECT specialite AS "spe" FROM specialite;');
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    while ($result !== false) {
+        yield $result['spe'];
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
 ?>
