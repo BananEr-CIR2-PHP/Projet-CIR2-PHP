@@ -13,7 +13,7 @@ $conn=dbConnect();
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title> Liste des médecins </title>
+        <title> Historique des RDV </title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
@@ -49,8 +49,8 @@ foreach (dbGetAllRDVIds($conn, $_SESSION['user_id']) as $rdv_id) {
     <div class=\"rounded-2 border border-dark d-flex flex-column\">
         <div class=\"d-flex justify-content-between bg-primary text-light\">
             <p class=\"my-auto\">RDV du $rdv_start_date à $rdv_start_time</p>
-            <form action=\"\" method=\"post\">
-                <button type=\"submit\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"\">Prendre un autre rendez-vous avec Dr. $doc_fullname</button>
+            <form action=\"creneaux_rdv.php\" method=\"get\">
+                <button type=\"submit\" name=\"medecin\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"$doc_id\">Prendre un autre rendez-vous avec Dr. $doc_fullname</button>
             </form>
         </div>
         <div class=\"d-flex justify-content-between\">

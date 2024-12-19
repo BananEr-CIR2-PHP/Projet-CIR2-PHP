@@ -12,7 +12,7 @@ $conn=dbConnect();
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title> Historique des RDV </title>
+        <title> Liste des médecins </title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
@@ -78,8 +78,8 @@ foreach (dbGetDocs($conn, $search_doc_name, $search_spe, $search_place) as $doc)
     echo "
                 </i></p>
             </div>
-            <form action=\"\" method=\"post\" class=\"align-self-center mx-2\">
-                <button type=\"submit\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"\">Prendre rendez-vous</button>
+            <form action=\"creneaux_rdv.php\" method=\"get\" class=\"align-self-center mx-2\">
+                <button type=\"submit\" name=\"medecin\" class=\"btn bg-primary border-light rounded-5 text-light m-1\" value=\"{$doc['doc_id']}\">Prendre rendez-vous</button>
             </form>
         </div>
     </div>";
