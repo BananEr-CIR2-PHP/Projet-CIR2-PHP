@@ -14,6 +14,10 @@ function dbConnect() {
     return $conn;
 }
 
+function getFullName($firstname, $lastname) {
+    return ucfirst($firstname)." ".strtoupper($lastname);
+}
+
 function dbGetAllRDVIds($conn, $id_patient) {
     $stmt = $conn->prepare('SELECT id FROM rdv WHERE id_patient=:id;');
     $stmt->bindParam(':id', $id_patient);
@@ -65,5 +69,52 @@ function dbGetRDVInfo($conn, $rdv_id) {
     $stmt->bindParam(':id', $rdv_id);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function dbGetDocs($conn, $doc_name, $doc_spe, $place) {
+    $spe = "%".strtolower($doc_spe)."%";
+    $name = "%".strtolower($doc_name)."%";
+    $placename = "%".strtolower($place)."%";
+
+    $stmt = $conn->prepare('SELECT m.id AS "doc_id", m.prenom AS "firstname", m.nom "lastname", spe.specialite AS "speciality" FROM medecin m
+    JOIN specialite spe ON m.specialite_id=spe.id
+    JOIN rdv r ON r.id_medecin=m.id
+    JOIN etablissement e ON r.id_etablissement=e.id
+    WHERE r.id_patient IS NULL
+    AND LOWER(spe.specialite) LIKE :docspe
+    AND LOWER(CONCAT(m.prenom, \' \', m.nom)) LIKE :docname
+    AND LOWER(e.nom) LIKE :placename
+    GROUP BY m.id,m.prenom, m.nom, spe.specialite;'); 
+
+    $stmt->bindParam(':docspe', $spe);
+    $stmt->bindParam(':docname', $name);
+    $stmt->bindParam(':placename', $placename);
+    
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    while ($result !== false) {
+        yield $result;
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
+function dbGetDocPlaces($conn, $doc_id) {
+    $stmt = $conn->prepare('SELECT e.nom AS "place" FROM medecin m
+    JOIN rdv r ON r.id_medecin=m.id
+    JOIN etablissement e ON r.id_etablissement=e.id
+    WHERE r.id_patient IS NULL
+    AND m.id=:docid
+    GROUP BY e.nom');
+
+    $stmt->bindParam(':docid', $doc_id);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    while ($result !== false) {
+        yield $result['place'];
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

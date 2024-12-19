@@ -13,7 +13,7 @@ $conn=dbConnect();
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title> Historique des RDV </title>
+        <title> Liste des médecins </title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
@@ -27,7 +27,7 @@ $conn=dbConnect();
         <div class="mx-auto" style="width:98%">
             <div class="d-flex justify-content-between m-3">
                 <h1>Mes rendez-vous</h1>
-                <form action="" method="get" class="align-self-center">
+                <form action="medecins.php" method="get" class="align-self-center">
                     <button type="submit" class="btn bg-primary border-light rounded-5 text-light">Prendre rendez-vous</button>
                 </form>
             </div>
@@ -62,23 +62,6 @@ foreach (dbGetAllRDVIds($conn, $_SESSION['user_id']) as $rdv_id) {
 }
 echo "</div>";
 ?>
-            
-            <!-- Example line
-            <div class="rounded-2 border border-dark d-grid gap-3 p-1">
-                <div class="rounded-2 border border-dark d-flex flex-column">
-                    <div class="d-flex justify-content-between bg-primary text-light">
-                        <p class="my-auto">RDV du ... à ...</p>
-                        <form action="" method="post">
-                            <button type="submit" class="btn bg-primary border-light rounded-5 text-light m-1" value="">Prendre un autre rendez-vous avec ...</button>
-                        </form>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="my-auto p-2">Dr. Pierre LEMOINE</p>
-                        <p class="my-auto p-2">Neurologie</p>
-                        <p class="my-auto p-2">CHU de Nantes</p>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </body>
 </html>
