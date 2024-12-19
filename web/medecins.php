@@ -24,10 +24,24 @@ $conn=dbConnect();
         </nav>
 
 <?php
+// Create datalist for list of doctors
+echo "<datalist id=\"medecins\">";
+foreach (dbGetAllDocNames($conn) as $doc_fullname) {
+    echo "<option value=\"$doc_fullname\">";
+}
+echo "</datalist>";
+
 // Create datalist for list of specialities
-echo "<datalist id=specialites>";
+echo "<datalist id=\"specialites\">";
 foreach (dbGetAllSpe($conn) as $spe) {
     echo "<option value=\"$spe\">";
+}
+echo "</datalist>";
+
+// Create datalist for list of places
+echo "<datalist id=\"etablissements\">";
+foreach (dbGetAllPlaces($conn) as $place) {
+    echo "<option value=\"$place\">";
 }
 echo "</datalist>";
 ?>
@@ -35,15 +49,15 @@ echo "</datalist>";
             <form action="" method="post" class="d-flex justify-content-between m-3">
                 <div>
                     <label for="medecin" class="px-3">Docteur</label>
-                    <input type="text" name="medecin"></input>
+                    <input type="search" name="medecin" list="medecins" <?php if (isset($_POST['medecin'])) echo "value=\"{$_POST['medecin']}\""; ?>></input>
                 </div>
                 <div>
                     <label for="specialite" class="px-3">Spécialité</label>
-                    <input type="search" name="specialite" list="specialites"></input>
+                    <input type="search" name="specialite" list="specialites" <?php if (isset($_POST['specialite'])) echo "value=\"{$_POST['specialite']}\""; ?>></input>
                 </div>
                 <div>
                     <label for="etablissement" class="px-3">Établissement</label>
-                    <input type="text" name="etablissement"></input>
+                    <input type="search" name="etablissement" list="etablissements" <?php if (isset($_POST['etablissement'])) echo"value=\"{$_POST['etablissement']}\""; ?>></input>
                 </div>
                 <button type="submit" value="search" class="btn btn-primary rounded-3">Rechercher</button>
             </form>

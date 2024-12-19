@@ -118,12 +118,32 @@ function dbGetDocPlaces($conn, $doc_id) {
     }
 }
 
+function dbGetAllDocNames($conn) {
+    $stmt = $conn->query('SELECT prenom AS "firstname", nom AS "lastname" FROM medecin;');
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    while ($result !== false) {
+        yield getFullName($result['firstname'], $result['lastname']);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
 function dbGetAllSpe($conn) {
     $stmt = $conn->query('SELECT specialite AS "spe" FROM specialite;');
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     while ($result !== false) {
         yield $result['spe'];
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}
+
+function dbGetAllPlaces($conn) {
+    $stmt = $conn->query('SELECT nom AS "place" FROM etablissement;');
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    while ($result !== false) {
+        yield $result['place'];
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
