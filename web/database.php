@@ -1,6 +1,7 @@
 <?php
 
 include_once('constants.php');
+include_once('time.php');
 
 function dbConnect() {
     $dsn = "pgsql:dbname=".DB_NAME.";host=".DB_SERVER.";port=".DB_PORT;
@@ -146,5 +147,23 @@ function dbGetAllPlaces($conn) {
         yield $result['place'];
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
+}
+
+function dbGetAvailableRDVSlots($conn, $start_tmstmp, $end_tmstmp) {
+    $start_time = formatAlpha($start_tmstmp);
+    $end_time = formatAlpha($end_tmstmp);
+
+    $stmt = $conn->prepare('SELECT
+    extract(epoch FROM r.debut)::int AS "start_tmstmp",
+    extract(epoch FROM r.fin)::int AS "end_tmstmp",
+    e.nom AS "place", r.id AS "slot_id" FROM rdv r
+    JOIN etablissement e ON r.id_etablissement=e.id
+    WHERE r.id_patient IS NULL
+    AND (r.debut>=:start_time AND r.debut<=:end_time OR r.fin>=:start_time AND r.fin<=:start_time);');
+    
+    $stmt->bindParam(':start_time', $start_time);
+    $stmt->bindParam(':end_time', $end_time);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
