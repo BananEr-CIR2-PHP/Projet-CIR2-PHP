@@ -33,6 +33,12 @@ function formatTimestamp($timestamp, $format) {
     return $dt->format($format);
 }
 
+/**
+ * Format timestamp to format DD/MM/YYYY 
+ * /!\ Requires valid session
+ * @param timestamp Time to format
+ * @return string Formatted string : DD/MM/YYYY
+ */
 function formatDay($timestamp) {
     return formatTimestamp($timestamp, 'd/m/Y');
 }
