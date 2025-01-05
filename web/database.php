@@ -149,7 +149,7 @@ function dbGetAllPlaces($conn) {
     }
 }
 
-function dbGetAvailableRDVSlots($conn, $start_tmstmp, $end_tmstmp) {
+function dbGetAvailableRDVSlots($conn, $id_doc, $start_tmstmp, $end_tmstmp) {
     $start_time = formatAlpha($start_tmstmp);
     $end_time = formatAlpha($end_tmstmp);
 
@@ -159,10 +159,12 @@ function dbGetAvailableRDVSlots($conn, $start_tmstmp, $end_tmstmp) {
     e.nom AS "place", r.id AS "slot_id" FROM rdv r
     JOIN etablissement e ON r.id_etablissement=e.id
     WHERE r.id_patient IS NULL
+    AND r.id_medecin=:id_doc
     AND (r.debut>=:start_time AND r.debut<=:end_time OR r.fin>=:start_time AND r.fin<=:start_time);');
     
     $stmt->bindParam(':start_time', $start_time);
     $stmt->bindParam(':end_time', $end_time);
+    $stmt->bindParam(':id_doc', $id_doc);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

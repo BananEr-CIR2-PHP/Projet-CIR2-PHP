@@ -74,7 +74,7 @@ echo "</div>";
 
 // --- Show timetable of available appointment slots ---
 
-$available_slots = dbGetAvailableRDVSlots($conn, $week_start_tmstmp, $week_end_tmstmp);
+$available_slots = dbGetAvailableRDVSlots($conn, $_GET['medecin'], $week_start_tmstmp, $week_end_tmstmp);
 
 // If no appointment is available, show message
 if (count($available_slots) == 0) {
