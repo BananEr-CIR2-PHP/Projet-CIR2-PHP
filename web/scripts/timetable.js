@@ -73,9 +73,10 @@ function createSlotButton(place, start, end, day, date, number_slots, slot_heigh
 
 function insertSlot(day, date, position_start, position_end, time_start, time_end, place, slot_height, slot_id) {
     // If day is out of week, dont place it
-    if (day > 6) {
+    if (day > 7) {
         return;
     }
+    
     // Expand corresponding <td>
     let td_start = document.getElementById("table-"+day+"-"+position_start);
     td_start.rowSpan = position_end - position_start;

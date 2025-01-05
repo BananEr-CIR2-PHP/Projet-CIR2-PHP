@@ -114,7 +114,7 @@ else {
             echo ":00</th>"; 
         }
 
-        for ($i=0; $i<7; $i++) {
+        for ($i=1; $i<8; $i++) {
             echo "<td class=\"td-timetable\" id=\"table-$i-$slot\"></td>";
         }
         echo "</tr>";
