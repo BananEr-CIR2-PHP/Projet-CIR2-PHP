@@ -23,7 +23,18 @@ $conn=dbConnect();
                 <button class="btn border-light rounded-5 text-light" type="submit" value="logout">Se déconnecter</button>
             </form>
         </nav>
-
+<?php
+// Message
+if (isset($_GET['valid']) && isset($_GET['msg'])) {
+    if ($_GET['valid'] == 1) {
+        echo "<div class=\"alert alert-success\" role=\"alert\">";
+    }
+    else {
+        echo "<div class=\"alert alert-danger\" role=\"alert\">";
+    }
+    echo "{$_GET['msg']}</div>";  
+}
+?>
         <div class="mx-auto" style="width:98%">
             <div class="d-flex justify-content-between m-3">
                 <h1>Mes rendez-vous</h1>

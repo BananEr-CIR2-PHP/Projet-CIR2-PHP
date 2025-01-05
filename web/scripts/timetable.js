@@ -78,7 +78,6 @@ function insertSlot(day, date, position_start, position_end, time_start, time_en
     }
     // Expand corresponding <td>
     let td_start = document.getElementById("table-"+day+"-"+position_start);
-    console.log(position_start)
     td_start.rowSpan = position_end - position_start;
     td_start.appendChild(createSlotButton(place, time_start, time_end, dayIntToString(day), date, position_end-position_start, slot_height, slot_id));
     

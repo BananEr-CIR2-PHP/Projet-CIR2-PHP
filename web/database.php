@@ -20,7 +20,7 @@ function getFullName($firstname, $lastname) {
 }
 
 function dbGetAllRDVIds($conn, $id_patient) {
-    $stmt = $conn->prepare('SELECT id FROM rdv WHERE id_patient=:id;');
+    $stmt = $conn->prepare('SELECT id FROM rdv WHERE id_patient=:id ORDER BY debut DESC;');
     $stmt->bindParam(':id', $id_patient);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -160,6 +160,7 @@ function dbGetAvailableRDVSlots($conn, $id_doc, $start_tmstmp, $end_tmstmp) {
     JOIN etablissement e ON r.id_etablissement=e.id
     WHERE r.id_patient IS NULL
     AND r.id_medecin=:id_doc
+    AND r.debut>NOW()
     AND (r.debut>=:start_time AND r.debut<=:end_time OR r.fin>=:start_time AND r.fin<=:start_time);');
     
     $stmt->bindParam(':start_time', $start_time);
@@ -168,4 +169,64 @@ function dbGetAvailableRDVSlots($conn, $id_doc, $start_tmstmp, $end_tmstmp) {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function dbRDVExists($conn, $rdv_id) {
+    $stmt = $conn->prepare("SELECT id FROM rdv WHERE id=:rdv_id;");
+    $stmt->bindParam(':rdv_id', $rdv_id);
+    $stmt->execute();
+    
+    return ($stmt->fetch(PDO::FETCH_ASSOC) !== false);
+}
+
+function dbIsRDVTaken($conn, $rdv_id) {
+    $stmt = $conn->prepare("SELECT id_patient FROM rdv WHERE id=:rdv_id;");
+    $stmt->bindParam(':rdv_id', $rdv_id);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result === false || $result['id_patient'] !== null;
+}
+
+function dbHasAlreadyRDV($conn, $id_patient, $start_time, $end_time) {
+    $stmt = $conn->prepare("SELECT id FROM rdv
+    WHERE id_patient=:id_patient
+    AND (debut<=:start_time AND fin>=:start_time
+    OR debut<=:end_time AND fin>=:end_time);");
+
+    $stmt->bindParam(':id_patient', $id_patient);
+    $stmt->bindParam(':start_time', $start_time);
+    $stmt->bindParam(':end_time', $end_time);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return ($result !== false);
+}
+
+function dbTakeRDV($conn, $rdv_id, $id_patient, &$error_msg) {
+    if (!dbRDVExists($conn, $rdv_id)) {
+        $error_msg = "Le rendez-vous sélectionné n'existe pas.";
+        return false;
+    }
+
+    if (dbIsRDVTaken($conn, $rdv_id)) {
+        $error_msg = "Le rendez-vous sélectionné est déjà pris.";
+        return false;
+    }
+
+    $rdv_info = dbGetRDVInfo($conn, $rdv_id);
+    if (dbHasAlreadyRDV($conn, $id_patient, $rdv_info['start'], $rdv_info['end'])) {
+        $error_msg = "Vous avez déjà pris un rendez-vous à la même heure.";
+        return false;
+    }
+
+    // Everything is OK: we can take appointment!
+    $stmt = $conn->prepare("UPDATE rdv SET id_patient=:id_patient WHERE id=:rdv_id;");
+    $stmt->bindParam(':id_patient', $id_patient);
+    $stmt->bindParam(':rdv_id', $rdv_id);
+    $stmt->execute();
+
+    $error_msg = "Le rendez-vous a bien été pris.";
+    return true;
+}
+
 ?>
