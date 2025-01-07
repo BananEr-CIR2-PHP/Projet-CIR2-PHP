@@ -37,6 +37,25 @@ if(isset($_REQUEST["btn"])) {
         header("location:login.php?msg=Identifiant ou mot de passe incorrect");
         exit;
     }
+    if ($_REQUEST["btn"]=="register") {
+        if($_GET['mail'] !== $_GET['cmail']){
+            header("location:register.php?msg=Les adresses mails sont différentes");
+            exit;
+        }
+        if(dbNewPatient($conn, $name, $surname, $tel, $email, $mdp, $msg) === false){
+            header("location:register.php?msg=$msg");
+            exit;
+        }
+        $id_pat = dbGetPatientIdByMail($conn, $_GET['mail']);
+        if($id_pat !== false){
+            $_SESSION["user_id"] = $id_pat;
+            $_SESSION['timezone'] = new DateTimeZone('Europe/Paris');
+            header("location:historique.php");
+            exit;
+        }
+        header("location:request.php?msg=Identifiant ou mot de passe incorrect");
+        exit;
+    }
 }
 
 if(isset($_REQUEST["destroy"])){
