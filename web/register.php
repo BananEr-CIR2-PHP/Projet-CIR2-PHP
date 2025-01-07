@@ -49,7 +49,7 @@
                                 <label for="password">Mot de passe</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" value="register" class="btn btn-primary btn-block">S'inscrire</button>
+                            <button type="submit" value="register" name="btn" class="btn btn-primary btn-block">S'inscrire</button>
                         </form>
                     </div>
                 </div>

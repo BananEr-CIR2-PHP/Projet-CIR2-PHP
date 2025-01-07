@@ -243,4 +243,8 @@ function dbGetPatientIdByMail($conn, $email){
     return $result['id'];
 }
 
+###function dbNewPatient($conn, $name, $surname, $tel, $email, $mdp){
+###    $stmt = $conn->query('SELECT email FROM patient')
+###}
+
 ?>
