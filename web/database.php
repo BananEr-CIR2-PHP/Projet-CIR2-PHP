@@ -243,8 +243,42 @@ function dbGetPatientIdByMail($conn, $email){
     return $result['id'];
 }
 
-###function dbNewPatient($conn, $name, $surname, $tel, $email, $mdp){
-###    $stmt = $conn->query('SELECT email FROM patient')
-###}
+function dbPatientEmailExists($conn, $email) {
+    $stmt = $conn->prepare("SELECT id FROM patient WHERE email=:email;");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    return ($stmt->fetch(PDO::FETCH_ASSOC) !== false);
+}
+
+function dbDocEmailExists($conn, $email) {
+    $stmt = $conn->prepare("SELECT id FROM medecin WHERE email=:email;");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    return ($stmt->fetch(PDO::FETCH_ASSOC) !== false);
+}
+
+function hash_pwd($pwd) {
+    password_hash($pwd, PASSWORD_BCRYPT);
+}
+
+function dbNewPatient($conn, $name, $firstname, $tel, $email, $mdp, &$msg){
+    if (dbPatientEmailExists($conn, $email) || dbDocEmailExists($conn, $email)) {
+        $msg = "Ce compte existe déjà.";
+        return false;
+    }
+
+    $pwd_hash = hash_pwd($mdp);
+    $stmt = $conn->prepare("INSERT INTO patient (nom, prenom, tel, email, mdp_hash)
+    VALUES (:lastname, :firstname, :tel, :email, :mdp_hash);");
+
+    $stmt->bindParam(':lastname', $name);
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':tel', $tel);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':mdp', $pwd_hash);
+
+    $stmt->execute();
+    return true;
+}
 
 ?>
