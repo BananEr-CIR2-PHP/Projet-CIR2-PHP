@@ -42,7 +42,7 @@ if(isset($_REQUEST["btn"])) {
             header("location:register.php?msg=Les adresses mails sont différentes");
             exit;
         }
-        if(dbNewPatient($conn, $name, $surname, $tel, $email, $mdp, $msg) === false){
+        if(dbNewPatient($conn, $_GET['name'], $_GET['surname'], $_GET['tel'], $_GET['mail'], $_GET['password'], $msg) === false){
             header("location:register.php?msg=$msg");
             exit;
         }
