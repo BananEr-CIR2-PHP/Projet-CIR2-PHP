@@ -33,7 +33,7 @@
                         <form action="request.php" method="get">
                             <div class="form-group justify-content-center">
                                 <label for="mail">Email</label>
-                                <input type="email" class="form-control" id="mail" name="btn" required>
+                                <input type="email" class="form-control" id="mail" name="mail" required>
                             </div>
                             <div class="form-group justify-content-center">
                                 <label for="password">Mot de passe</label>
