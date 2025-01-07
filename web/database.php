@@ -240,7 +240,7 @@ function dbGetPatientIdByMail($conn, $email){
     if ($result === false) {
         return false;
     }
-    return ucfirst($result['id']);
+    return $result['id'];
 }
 
 ?>

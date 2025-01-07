@@ -16,6 +16,12 @@
                 <button class="btn border-light rounded-5 text-light" type="submit" value="logout">Se déconnecter</button>
             </form>
         </nav>
+        <?php
+        if ( isset($_GET['msg'])) {
+            echo "<div class=\"alert alert-danger\" role=\"alert\">";
+            echo "{$_GET['msg']}</div>";
+        }
+        ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -27,16 +33,18 @@
                         <form action="request.php" method="get">
                             <div class="form-group justify-content-center">
                                 <label for="mail">Email</label>
-                                <input type="email" class="form-control" id="mail" name="mail" required>
+                                <input type="email" class="form-control" id="mail" name="btn" required>
                             </div>
                             <div class="form-group justify-content-center">
                                 <label for="password">Mot de passe</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" value="login" class="btn btn-primary btn-block">Se connecter</button>
+                            <button type="submit" value="login" name="btn" class="btn btn-primary btn-block">Se connecter</button>
                         </form>
                         <br>
-                        <button type="submit" value="create" class="btn btn-primary btn-block">S'inscrire</button>
+                        <form action="register.php">
+                            <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+                        </form>
                     </div>
                 </div>
             </div>
