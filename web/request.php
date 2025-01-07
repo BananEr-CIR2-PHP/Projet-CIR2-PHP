@@ -15,14 +15,7 @@ if (isset($_POST['rdv'])) {
     }
 }
 
-// TEMPORAIRE : Garder svp tant que le login n'est pas terminé
 if(isset($_REQUEST["btn"])) {
-    if ($_REQUEST["btn"]=="temp_login") {
-        $_SESSION["user_id"] = 3;
-        $_SESSION['timezone'] = new DateTimeZone('Europe/Paris');
-        header("location:historique.php");
-        exit;
-    }
     if ($_REQUEST["btn"]=="login") {
         if(!isset($_GET['mail'])){
             header("location:login.php?msg=Identifiant ou mot de passe incorrect");
