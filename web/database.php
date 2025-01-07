@@ -243,6 +243,11 @@ function dbGetPatientIdByMail($conn, $email){
     return $result['id'];
 }
 
+function dbCheckPatientPwd($conn, $id_patient, $pwd) {
+    $stmt = $conn->prepare('SELECT mdp_hash AS "pwd_hash" FROM patient WHERE id=:id');
+    
+}
+
 function dbPatientEmailExists($conn, $email) {
     $stmt = $conn->prepare("SELECT id FROM patient WHERE email=:email;");
     $stmt->bindParam(':email', $email);
@@ -275,8 +280,7 @@ function dbNewPatient($conn, $name, $firstname, $tel, $email, $mdp, &$msg){
     $stmt->bindParam(':firstname', $firstname);
     $stmt->bindParam(':tel', $tel);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':mdp', $pwd_hash);
-
+    $stmt->bindParam(':mdp_hash', $pwd_hash);
     $stmt->execute();
     return true;
 }
