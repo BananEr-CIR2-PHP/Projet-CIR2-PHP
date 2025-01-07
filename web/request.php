@@ -28,7 +28,7 @@ if(isset($_REQUEST["btn"])) {
             header("location:login.php?msg=Identifiant ou mot de passe incorrect");
         }
         $id_pat = dbGetPatientIdByMail($conn, $_GET['mail']);
-        if($id_pat !== false){
+        if($id_pat !== false && isset($_GET['password']) && dbCheckPatientPwd($conn, $id_pat, $_GET['password'])){
             $_SESSION["user_id"] = $id_pat;
             $_SESSION['timezone'] = new DateTimeZone('Europe/Paris');
             header("location:historique.php");
