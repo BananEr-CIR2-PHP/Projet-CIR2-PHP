@@ -39,6 +39,15 @@ if(isset($_REQUEST["btn"])) {
     }
 }
 
+if(isset($_REQUEST["destroy"])){
+    if(isset($_REQUEST['destroy'])){
+        if($_REQUEST['destroy'] === "logout"){
+            session_destroy();
+            header("location:login.php");
+            exit;
+        }
+    }
+}
 
 header("location:login.php");
 exit;

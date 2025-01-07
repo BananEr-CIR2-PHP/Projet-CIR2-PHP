@@ -33,7 +33,7 @@ if ($doc_fullname === false) {
         <nav class="navbar bg-primary navbar-expand-lg d-flex justify-content-between">
             <img src="img/logo_small.png" srcset="img/logo_medium 900w, img/logo_large.png 1900w, img/logo_xlarge.png 3000w" alt="Logo">
             <form method="get" action="request.php">
-                <button class="btn border-light rounded-5 text-light" type="submit" value="logout">Se déconnecter</button>
+                <button class="btn border-light rounded-5 text-light" type="submit" value="logout" name="destroy">Se déconnecter</button>
             </form>
         </nav>
 
