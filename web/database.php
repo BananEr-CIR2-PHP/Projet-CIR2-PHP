@@ -245,7 +245,14 @@ function dbGetPatientIdByMail($conn, $email){
 
 function dbCheckPatientPwd($conn, $id_patient, $pwd) {
     $stmt = $conn->prepare('SELECT mdp_hash AS "pwd_hash" FROM patient WHERE id=:id');
-    
+    $stmt->bindParam(':id', $id_patient);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result === false) {
+        return false;
+    }
+    return check_pwd($result['pwd_hash'], $pwd);
 }
 
 function dbPatientEmailExists($conn, $email) {
@@ -263,7 +270,14 @@ function dbDocEmailExists($conn, $email) {
 }
 
 function hash_pwd($pwd) {
-    password_hash($pwd, PASSWORD_BCRYPT);
+    $options = [
+        'cost' => 12,
+    ];
+    return password_hash($pwd, PASSWORD_BCRYPT, $options);
+}
+
+function check_pwd($pwd_hash, $pwd) {
+    return password_verify($pwd, $pwd_hash);
 }
 
 function dbNewPatient($conn, $name, $firstname, $tel, $email, $mdp, &$msg){
@@ -273,14 +287,16 @@ function dbNewPatient($conn, $name, $firstname, $tel, $email, $mdp, &$msg){
     }
 
     $pwd_hash = hash_pwd($mdp);
+    
     $stmt = $conn->prepare("INSERT INTO patient (nom, prenom, tel, email, mdp_hash)
     VALUES (:lastname, :firstname, :tel, :email, :mdp_hash);");
-
+    
     $stmt->bindParam(':lastname', $name);
     $stmt->bindParam(':firstname', $firstname);
     $stmt->bindParam(':tel', $tel);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':mdp_hash', $pwd_hash);
+
     $stmt->execute();
     return true;
 }
