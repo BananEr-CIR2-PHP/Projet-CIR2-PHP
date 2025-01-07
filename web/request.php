@@ -23,6 +23,25 @@ if(isset($_REQUEST["btn"])) {
         header("location:historique.php");
         exit;
     }
+    if ($_REQUEST["btn"]=="create") {
+        header("location:register.php");
+        exit;
+    }
+    if ($_REQUEST["btn"]=="login") {
+        $id_pat = dbGetPatientIdByMail($conn, $_GET['mail']);
+        if(isset($id_pat)){
+            $_SESSION["user_id"] = $id_pat;
+            $_SESSION['timezone'] = new DateTimeZone('Europe/Paris');
+            header("location:historique.php");
+            exit;
+        }
+        header("location:register.php");
+        exit;
+    }
 }
+
+
+header("location:login.php");
+exit;
 
 ?>

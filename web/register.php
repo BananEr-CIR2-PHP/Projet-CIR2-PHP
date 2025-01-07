@@ -6,7 +6,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title>Login</title>
+        <title>Register</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
@@ -21,22 +21,36 @@
             <div class="col-md-6">
                 <div class="card mt-5 justify-content-center">
                     <div class="card-header text-center">
-                        <h3>Connexion</h3>
+                        <h3>Inscription</h3>
                     </div>
                     <div class="card-body justify-content-center">
                         <form action="request.php" method="get">
+                            <div class="form-group justify-content-center">
+                                <label for="name">Nom</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group justify-content-center">
+                                <label for="surname">Prénom</label>
+                                <input type="text" class="form-control" id="surname" name="surname" required>
+                            </div>
+                            <div class="form-group justify-content-center">
+                                <label for="tel">Téléphone</label>
+                                <input type="text" class="form-control" id="tel" name="tel" required>
+                            </div>
                             <div class="form-group justify-content-center">
                                 <label for="mail">Email</label>
                                 <input type="email" class="form-control" id="mail" name="mail" required>
                             </div>
                             <div class="form-group justify-content-center">
+                                <label for="cmail">Email (Confirmation)</label>
+                                <input type="email" class="form-control" id="cmail" name="cmail" required>
+                            </div>
+                            <div class="form-group justify-content-center">
                                 <label for="password">Mot de passe</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" value="login" class="btn btn-primary btn-block">Se connecter</button>
+                            <button type="submit" value="register" class="btn btn-primary btn-block">S'inscrire</button>
                         </form>
-                        <br>
-                        <button type="submit" value="create" class="btn btn-primary btn-block">S'inscrire</button>
                     </div>
                 </div>
             </div>

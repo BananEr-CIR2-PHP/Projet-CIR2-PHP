@@ -229,4 +229,18 @@ function dbTakeRDV($conn, $rdv_id, $id_patient, &$error_msg) {
     return true;
 }
 
+function dbGetPatientIdByMail($conn, $email){
+    $stmt = $conn->prepare('SELECT id FROM patient WHERE email=:email');
+
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result === false) {
+        return false;
+    }
+    return ucfirst($result['id']);
+}
+
 ?>
