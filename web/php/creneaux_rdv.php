@@ -26,12 +26,12 @@ if ($doc_fullname === false) {
         <meta charset="utf-8">
         <title> Créneaux du Dr. <?php echo $doc_fullname; ?> </title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="scripts/timetable.js"></script>
+        <script src="../scripts/timetable.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </head>
     <body>
         <nav class="navbar bg-primary navbar-expand-lg d-flex justify-content-between">
-            <img src="img/logo_small.png" srcset="img/logo_medium 900w, img/logo_large.png 1900w, img/logo_xlarge.png 3000w" alt="Logo">
+            <img src="../img/logo_small.png" srcset="../img/logo_medium 900w, ../img/logo_large.png 1900w, ../img/logo_xlarge.png 3000w" alt="Logo">
             <form method="get" action="request.php">
                 <button class="btn border-light rounded-5 text-light" type="submit" value="logout" name="destroy">Se déconnecter</button>
             </form>
